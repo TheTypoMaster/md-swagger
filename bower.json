@@ -1,0 +1,27 @@
+{
+  "name": "md-swagger-ui",
+  "main": "dist/index.html",
+  "authors": [
+    "Verizon"
+  ],
+  "description": "MD Swagger UI",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "Swagger",
+    "API"
+  ],
+  "license": "Copyright 2015 Verizon",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.3"
+  }
+}
