@@ -1,5 +1,5 @@
 /**
- * md-swagger-ui - MD Swagger UI is a dependency-free collection of HTML, JavaScript, and CSS assets that dynamically generate beautiful documentation from a Swagger-compliant API
+ * md-swagger - MD Swagger UI is a dependency-free collection of HTML, JavaScript, and CSS assets that dynamically generate beautiful documentation from a Swagger-compliant API
  * @version v2.1.1
  * @link http://swagger.io
  * @license Apache-2.0
@@ -31,7 +31,7 @@
 	angular.module('md-swagger', [])
 			.controller('mdSwaggerCtrl', function($http, $scope){
 				console.log('initiaing demo controller');
-				$scope.baseJsonUri = "/md-swagger/dist/";
+				$scope.baseJsonUri = "";
 				$http.get('docs/sample.md').success(function(data){
 					$scope.markdown = data;
 				});
@@ -60,32 +60,49 @@
 								var id = "swagger-url-container-" + i + 1;
 								var div = "<div class='swagger-section'><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
 								$(code.parentNode).replaceWith(div);
-								code.innerText = code.innerText.replace(/(?:\r\n|\r|\n)/g, '');
+
+								var spec = JSON.parse(code.innerText);
+								var url = spec.url.replace(/(?:\r\n|\r|\n)/g, '');
 								var jsonUrl;
-								if (code.innerText.substring(0, 5) === "http:") {
-									jsonUrl = code.innerText;
+								if (url.substring(0, 5) === "http:") {
+									jsonUrl = url;
 								} else {
-									jsonUrl = window.location.origin + baseJsonUri + code.innerText;
+									jsonUrl = window.location.origin + baseJsonUri + url;
 								}
 								window.swaggerUrlUi = new SwaggerUi({
 									url: jsonUrl,
 									dom_id: id
 								});
 								window.swaggerUrlUi.load();
-							}
-
-							;
+							};
 						};
 						function loadSwaggerFromJson() {
 							var swaggerElements = $($elem[0]).find(".lang-swagger-json");
 							for (var i = 0; i < swaggerElements.length; i++) {
 								var code = swaggerElements[i];
-								if (window.SwaggerTranslator) {
-									window.SwaggerTranslator.translate();
-								}
-								;
+
 								var spec = JSON.parse(code.innerText);
-								var id = "swagger-container-" + i + 1;
+								var id = "swagger-json-container" + i + 1;
+								var div = "<div class='swagger-section'><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+								$(code.parentNode).replaceWith(div);
+
+								window.swaggerUi = new SwaggerUi({
+									url: 'localhost',
+									spec: spec,
+									dom_id: id
+								});
+								window.swaggerUi.load();
+							}
+							;
+						};
+						function loadSwaggerFromYaml() {
+							var swaggerElements = $($elem[0]).find(".lang-swagger-yaml");
+							for (var i = 0; i < swaggerElements.length; i++) {
+								var code = swaggerElements[i];
+
+								var yml = code.innerText;
+								var spec = YAML.parse(yml);
+								var id = "swagger-yaml-container-" + i + 1;
 								var div = "<div class='swagger-section'><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
 								$(code.parentNode).replaceWith(div);
 
@@ -107,6 +124,7 @@
 								setTimeout(function () {
 									loadSwaggerFromUrl();
 									loadSwaggerFromJson();
+									loadSwaggerFromYaml();
 									$scope.$apply();
 								}, 10);
 							}

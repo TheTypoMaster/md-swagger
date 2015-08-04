@@ -1,18 +1,5 @@
 {
     "swagger": "2.0",
-    "info": {
-        "description": "This is API Documentation for Network Status API's ",
-        "version": "1.0.0",
-        "title": "Swagger Network Status API",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "email": "apiteam@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        }
-    },
     "host": "status.vdmstest.com",
     "basePath": "/api/v1",
     "tags": [
@@ -168,9 +155,5 @@
                 }
             }
         }
-    },
-    "externalDocs": {
-        "description": "Find out more about Swagger",
-        "url": "http://swagger.io"
     }
 }

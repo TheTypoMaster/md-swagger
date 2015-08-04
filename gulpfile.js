@@ -113,6 +113,12 @@ gulp.task('copy', ['less'], function() {
     .pipe(gulp.dest('./dist/lib'))
     .on('error', log);
 
+// copy JavaScript files inside lib folder
+	gulp
+			.src(['./bower_components/**/*.{js,map}'])
+			.pipe(gulp.dest('./dist/bower_components'))
+			.on('error', log);
+
 	// copy `docs` for translations
 	gulp
 			.src(['./docs/**/*.*'])
@@ -158,3 +164,4 @@ function log(error) {
 
 gulp.task('default', ['dist', 'copy']);
 gulp.task('serve', ['connect', 'watch']);
+gulp.task('develop', ['dist','copy','connect', 'watch']);
