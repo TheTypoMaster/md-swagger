@@ -42,8 +42,8 @@
 								var div = "<div class='swagger-section'><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
 								$(code.parentNode).replaceWith(div);
 
-								var spec = JSON.parse(code.innerText);
-								var url = spec.url.replace(/(?:\r\n|\r|\n)/g, '');
+								//var spec = JSON.parse(code.innerText);
+								var url = code.innerText.replace(/(?:\r\n|\r|\n)/g, '');
 								var jsonUrl;
 								if (url.substring(0, 5) === "http:") {
 									jsonUrl = url;
@@ -83,6 +83,7 @@
 
 								var yml = code.innerText;
 								var spec = YAML.parse(yml);
+
 								var id = "swagger-yaml-container-" + i + 1;
 								var div = "<div class='swagger-section'><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
 								$(code.parentNode).replaceWith(div);

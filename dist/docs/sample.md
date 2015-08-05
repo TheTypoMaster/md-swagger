@@ -368,7 +368,7 @@ definitions:
 						"description": "categories to filter by",
 						"type": "string"
 					}
-                ]		
+                ]
 			}
 		}
     },
@@ -437,17 +437,11 @@ definitions:
 ## YAML from a file or url (swagger-url)
 
 ```swagger-url
-{
-"type":"yaml",
-"url":"/docs/swagger.yaml"
-}
+/docs/swagger.yaml
 ```
 
 ## JSON from a file or url (swagger-url)
 
 ```swagger-url
-{
-"type":"json",
-"url":"/docs/swagger.json"
-}
+/docs/swagger.json
 ```
