@@ -22,8 +22,6 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "~1.4.3",
-    "highlight": "~7.0.1",
-    "bootstrap": "~3.3.5"
+    "angular": "~1.4.3"
   }
 }

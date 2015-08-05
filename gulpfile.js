@@ -89,7 +89,7 @@ gulp.task('less', ['clean'], function() {
 
   return gulp
     .src([
-      './src/main/less/md.less'
+      './src/main/less/md.less', './src/main/less/swagger.less'
     ])
     .pipe(less())
 			.pipe(concat('md-swagger.css'))

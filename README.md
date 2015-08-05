@@ -24,7 +24,7 @@ Use `gulp watch` to make a new build and watch for changes in files.
 
 ### Usage, Customization and Configuration
 
-The following md customization are supported as of 1.5.0
+The following md customization are supported as of 1.7.0
 
 ## swagger-url
 
@@ -80,4 +80,4 @@ example:
 
 MD Swagger UI Version | Release Date | Swagger Spec compatibility | Notes
 ------------------ | ------------ | -------------------------- | ----- 
-1.5.0              | 2015-08-05   | 1.1, 1.2, 2.0              | [master](https://github.com/IRVUI/md-swagger)
+1.7.0              | 2015-08-05   | 1.1, 1.2, 2.0              | [master](https://github.com/IRVUI/md-swagger)

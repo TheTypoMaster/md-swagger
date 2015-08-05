@@ -1,83 +1,451 @@
-##MD Swagger UI
+# Demo markdown for md swagger
 
-MD Swagger UI is a dependency-free collection of HTML, Javascript, and CSS assets that dynamically
-generate beautiful documentation and sandbox from a markdown file.
+## Empedded YAML (swagger-yaml)
 
+```swagger-yaml
+swagger: '2.0'
+# the domain of the service
+host: api.uber.com
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /products:
+    get:
+      summary: Product Types
+      description: |
+        The Products endpoint returns information about the *Uber* products
+        offered at a given location. The response includes the display name
+        and other details about each product, and lists the products in the
+        proper display order.
+      parameters:
+        - name: latitude
+          in: query
+          description: Latitude component of location.
+          required: true
+          type: number
+          format: double
+        - name: longitude
+          in: query
+          description: Longitude component of location.
+          required: true
+          type: number
+          format: double
+      tags:
+        - Products
+      responses:
+        200:
+          description: An array of products
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /estimates/price:
+    get:
+      summary: Price Estimates
+      description: |
+        The Price Estimates endpoint returns an estimated price range
+        for each product offered at a given location. The price estimate is
+        provided as a formatted string with the full price range and the localized
+        currency symbol.<br><br>The response also includes low and high estimates,
+        and the [ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code for
+        situations requiring currency conversion. When surge is active for a particular
+        product, its surge_multiplier will be greater than 1, but the price estimate
+        already factors in this multiplier.
+      parameters:
+        - name: start_latitude
+          in: query
+          description: Latitude component of start location.
+          required: true
+          type: number
+          format: double
+        - name: start_longitude
+          in: query
+          description: Longitude component of start location.
+          required: true
+          type: number
+          format: double
+        - name: end_latitude
+          in: query
+          description: Latitude component of end location.
+          required: true
+          type: number
+          format: double
+        - name: end_longitude
+          in: query
+          description: Longitude component of end location.
+          required: true
+          type: number
+          format: double
+      tags:
+        - Estimates
+      responses:
+        200:
+          description: An array of price estimates by product
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PriceEstimate'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /estimates/time:
+    get:
+      summary: Time Estimates
+      description: The Time Estimates endpoint returns ETAs for all products offered at a given location, with the responses expressed as integers in seconds. We recommend that this endpoint be called every minute to provide the most accurate, up-to-date ETAs.
+      parameters:
+        - name: start_latitude
+          in: query
+          description: Latitude component of start location.
+          required: true
+          type: number
+          format: double
+        - name: start_longitude
+          in: query
+          description: Longitude component of start location.
+          required: true
+          type: number
+          format: double
+        - name: customer_uuid
+          in: query
+          type: string
+          format: uuid
+          description: Unique customer identifier to be used for experience customization.
+        - name: product_id
+          in: query
+          type: string
+          description: Unique identifier representing a specific product for a given latitude & longitude.
+      tags:
+        - Estimates
+      responses:
+        200:
+          description: An array of products
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /me:
+    get:
+      summary: User Profile
+      description: The User Profile endpoint returns information about the Uber user that has authorized with the application.
+      tags:
+        - User
+      responses:
+        200:
+          description: Profile information for a user
+          schema:
+            $ref: '#/definitions/Profile'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /history:
+    get:
+      summary: User Activity
+      description: The User Activity endpoint returns data about a user's lifetime activity with Uber. The response will include pickup locations and times, dropoff locations and times, the distance of past requests, and information about which products were requested.<br><br>The history array in the response will have a maximum length based on the limit parameter. The response value count may exceed limit, therefore subsequent API requests may be necessary.
+      parameters:
+        - name: offset
+          in: query
+          type: integer
+          format: int32
+          description: Offset the list of returned results by this amount. Default is zero.
+        - name: limit
+          in: query
+          type: integer
+          format: int32
+          description: Number of items to retrieve. Default is 5, maximum is 100.
+      tags:
+        - User
+      responses:
+        200:
+          description: History information for the given user
+          schema:
+            $ref: '#/definitions/Activities'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+definitions:
+  Product:
+    properties:
+      product_id:
+        type: string
+        description: Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles.
+      description:
+        type: string
+        description: Description of product.
+      display_name:
+        type: string
+        description: Display name of product.
+      capacity:
+        type: string
+        description: Capacity of product. For example, 4 people.
+      image:
+        type: string
+        description: Image URL representing the product.
+  PriceEstimate:
+    properties:
+      product_id:
+        type: string
+        description: Unique identifier representing a specific product for a given latitude & longitude. For example, uberX in San Francisco will have a different product_id than uberX in Los Angeles
+      currency_code:
+        type: string
+        description: "[ISO 4217](http://en.wikipedia.org/wiki/ISO_4217) currency code."
+      display_name:
+        type: string
+        description: Display name of product.
+      estimate:
+        type: string
+        description: Formatted string of estimate in local currency of the start location. Estimate could be a range, a single number (flat rate) or "Metered" for TAXI.
+      low_estimate:
+        type: number
+        description: Lower bound of the estimated price.
+      high_estimate:
+        type: number
+        description: Upper bound of the estimated price.
+      surge_multiplier:
+        type: number
+        description: Expected surge multiplier. Surge is active if surge_multiplier is greater than 1. Price estimate already factors in the surge multiplier.
+  Profile:
+    properties:
+      first_name:
+        type: string
+        description: First name of the Uber user.
+      last_name:
+        type: string
+        description: Last name of the Uber user.
+      email:
+        type: string
+        description: Email address of the Uber user
+      picture:
+        type: string
+        description: Image URL of the Uber user.
+      promo_code:
+        type: string
+        description: Promo code of the Uber user.
+  Activity:
+    properties:
+      uuid:
+        type: string
+        description: Unique identifier for the activity
+  Activities:
+    properties:
+      offset:
+        type: integer
+        format: int32
+        description: Position in pagination.
+      limit:
+        type: integer
+        format: int32
+        description: Number of items to retrieve (100 max).
+      count:
+        type: integer
+        format: int32
+        description: Total number of items available.
+      history:
+        type: array
+        items:
+          $ref: '#/definitions/Activity'
+  Error:
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
+```
 
-## How to Use It
+## Empedded JSON (swagger-json)
 
-### Download
-You can use the md-swagger-ui code AS-IS!  No need to build or recompile--just clone this repo and use the pre-built files in the `dist` folder.
+```swagger-json
+{
+    "swagger": "2.0",
+    "host": "status.vdmstest.com",
+    "basePath": "/api/v1",
+    "tags": [
+        {
+            "name": "status",
+            "description": "status for each pop"
+        },
+		{
+            "name": "statussummary",
+            "description": "status summary"
+        },
+		{
+            "name": "users",
+            "description": "admin users"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+		 "/users": {
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get Users",
+                "description": "Get Network Status Admin Users",
+				"operationId":"getUsers",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+					{
+						"name": "apiToken",
+						"in": "header",
+						"type": "string"
+					}
+                ],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    },
+					"401":{
+						"description": "unauthorized"
+					}
+                }
+            }
+        },
+        "/status": {
+            "get": {
+                "tags": [
+                    "status"
+                ],
+                "summary": "Get Status",
+                "description": "Get Network Status For POPS",
+				"operationId":"getStatus",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
 
-##### Browser support
-MD Swagger UI works in all evergreen desktop browsers (Chrome, Safari, Firefox). Internet Explorer support is version 8 (IE8) and above.
+                ],
+                "responses": {
+                    "default": {
+                        "description": "successful operation"
+                    },
+					"401":{
+						"description": "unauthorized"
+					}
+                }
+            }
+        },
+		"/status/summary":{
+			"get":{
+				"tags": [
+                    "status"
+                ],
+				"summary":"Get Status Summary",
+				"description": "Get Network Status summary for POPS",
+				"operationId":"getStatusSummary",
+				"parameters": [
+					{
+						"name": "Category",
+						"in": "query",
+						"description": "categories to filter by",
+						"type": "string"
+					},
+					{
+						"name": "Service",
+						"in": "query",
+						"description": "categories to filter by",
+						"type": "string"
+					}
+                ]
+			}
+		}
+    },
+    "securityDefinitions": {
+        "api_key": {
+            "type": "apiKey",
+            "name": "apiToken",
+            "in": "header"
+        }
+    },
+    "definitions": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "firstName": {
+                    "type": "string"
+                },
+                "lastName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "userStatus": {
+                    "type": "integer",
+                    "format": "int32",
+                    "description": "User Status"
+                }
+            },
+            "xml": {
+                "name": "User"
+            }
+        },
+        "ApiResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
+```
 
-### Build
-You can rebuild md-swagger-ui on your own to tweak it or just so you can say you did.  To do so, follow these steps:
+## YAML from a file or url (swagger-url)
 
-1. `bower install md-swagger-ui`
-2. `gulp`
-3. You should see the distribution under the dist folder. Open [`./dist/index.html`](https://github.com/IRVUI/md-swagger/blob/master/dist/index.html) to launch MD Swagger UI in a browser
+```swagger-url
+/docs/swagger.yaml
+```
 
-### Development
-Use `gulp watch` to make a new build and watch for changes in files.
+## JSON from a file or url (swagger-url)
 
-### Usage, Customization and Configuration
-
-The following md customization are supported as of 1.5.0
-
-## swagger-url
-
-###example1:json url
-
- \```swagger-url
-
- /docs/sample.json
-     
- \```
- 
- \```swagger-url
-
-http://petstore.swagger.io/v2/swagger.json
-     
- \```
- 
-
-###example2:yaml url
- \```swagger-url
-
- /docs/sample.yaml
-     
- \```
- 
- 
-  
-## swagger-yaml (embedded yaml)
-
-example:
-
-\```swagger-yaml
-
-
-  ... place your swagger yaml ...
-  
-
-\```
-
-
-## swagger-json (embedded json)
-
-example:
-
-\```swagger-json
-
-
-  ... place your swagger json ...
-  
-
-\```
-
+```swagger-url
+/docs/swagger.json
+```
 
 MD Swagger UI Version | Release Date | Swagger Spec compatibility | Notes
------------------- | ------------ | -------------------------- | ----- 
+------------------ | ------------ | -------------------------- | -----
 1.5.0              | 2015-08-05   | 1.1, 1.2, 2.0              | [master](https://github.com/IRVUI/md-swagger)
