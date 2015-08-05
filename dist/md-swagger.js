@@ -28,6 +28,14 @@
 						var baseJsonUri = $scope.baseJsonUri;
 
 
+					/*	// Synchronous highlighting with highlight.js
+						marked.setOptions({
+							highlight: function (code) {
+								return highlight().highlightAuto(code).value;
+							}
+						});*/
+
+
 						// Pre load translate...
 						if (window.SwaggerTranslator) {
 							window.SwaggerTranslator.translate();
@@ -73,8 +81,7 @@
 									dom_id: id
 								});
 								window.swaggerUi.load();
-							}
-							;
+							};
 						};
 						function loadSwaggerFromYaml() {
 							var swaggerElements = $($elem[0]).find(".lang-swagger-yaml");
@@ -100,8 +107,11 @@
 						ngModel.$render = function () {
 							var md = ngModel.$viewValue;
 							if (md && md.length > 0) {
+
 								var html = marked(ngModel.$viewValue || '');
-								$elem.html(html);
+								var wrapper = $('<div class="md-swagger"></div>');
+								wrapper.html(html);
+								$elem.append(wrapper);
 
 								setTimeout(function () {
 									loadSwaggerFromUrl();

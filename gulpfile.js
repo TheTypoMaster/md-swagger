@@ -89,12 +89,10 @@ gulp.task('less', ['clean'], function() {
 
   return gulp
     .src([
-      './src/main/less/screen.less',
-      './src/main/less/print.less',
-      './src/main/less/reset.less',
-      './src/main/less/style.less'
+      './src/main/less/md.less'
     ])
     .pipe(less())
+			.pipe(concat('md-swagger.css'))
     .on('error', log)
     .pipe(gulp.dest('./src/main/html/css/'))
     .pipe(connect.reload());
