@@ -11,7 +11,6 @@
 
 	angular.module('md-swagger', [])
 			.controller('mdSwaggerCtrl', function($http, $scope){
-				console.log('initiaing demo controller');
 				$scope.baseJsonUri = "";
 				$http.get('docs/sample.md').success(function(data){
 					$scope.markdown = data;
@@ -41,7 +40,6 @@
 						}
 
 
-
 						// Pre load translate...
 						if (window.SwaggerTranslator) {
 							window.SwaggerTranslator.translate();
@@ -54,7 +52,7 @@
 
 								var id = "swagger-url-container-" + i + 1;
 								var api_key_id = "input_apiKey" + i + 1;
-								var div = "<div class='swagger-section'><div class='input'><input placeholder='api_key' id='" + api_key_id + "' name='apiKey' type='text'/></div><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+								var div = "<div class='swagger-section'><div class='input'><label>API Token: </label><input class='form-control' style='width:40%' placeholder='api_key' id='" + api_key_id + "' name='apiKey' type='text'/></div><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
 
 								$(code.parentNode).replaceWith(div);
 
@@ -74,8 +72,7 @@
 										$('#' + api_key_id).change(function(){  addApiKeyAuthorization(api_key_id);});
 									},
 									docExpansion: "none",
-									apisSorter: "alpha",
-									showRequestHeaders: true
+									apisSorter: "alpha"
 								});
 								window.swaggerUrlUi.load();
 							};
@@ -88,7 +85,7 @@
 								var spec = JSON.parse(code.innerText);
 								var id = "swagger-json-container" + i + 1;
 								var api_key_id = "input_json_apiKey" + i + 1;
-								var div = "<div class='swagger-section'><div class='input'><label>API Token</label><input class='form-control' placeholder='api_key' id='" + api_key_id + "' name='apiKey' type='text'/></div><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+								var div = "<div class='swagger-section'><div class='input'><label>API Token: </label><input class='form-control' style='width:40%' placeholder='api_key' id='" + api_key_id + "' name='apiKey' type='text'/></div><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
 								$(code.parentNode).replaceWith(div);
 
 								window.swaggerUi = new SwaggerUi({
@@ -101,8 +98,7 @@
 										$('#' + api_key_id).change(function(){ addApiKeyAuthorization(api_key_id);});
 									},
 									docExpansion: "none",
-									apisSorter: "alpha",
-									showRequestHeaders: true
+									apisSorter: "alpha"
 								});
 								window.swaggerUi.load();
 							};
@@ -117,7 +113,8 @@
 
 								var id = "swagger-yaml-container-" + i + 1;
 								var api_key_id = "input_yaml_apiKey" + i + 1;
-								var div = "<div class='swagger-section'><div class='input'><input placeholder='api_key' id='" + api_key_id + "' name='apiKey' type='text'/></div><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+								var div = "<div class='swagger-section'><div class='input'><label>API Token: </label><input class='form-control' style='width:40%' placeholder='api_key' id='" + api_key_id + "' name='apiKey' type='text'/></div><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+
 
 								$(code.parentNode).replaceWith(div);
 
@@ -130,8 +127,7 @@
 										$('#' + api_key_id).change(function(){addApiKeyAuthorization(api_key_id);});
 									},
 									docExpansion: "none",
-									apisSorter: "alpha",
-									showRequestHeaders: true
+									apisSorter: "alpha"
 								});
 								window.swaggerUi.load();
 							}
