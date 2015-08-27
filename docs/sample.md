@@ -306,13 +306,7 @@ definitions:
                 "produces": [
                     "application/json"
                 ],
-                "parameters": [
-					{
-						"name": "apiToken",
-						"in": "header",
-						"type": "string"
-					}
-                ],
+                "parameters": [],
                 "responses": {
                     "default": {
                         "description": "successful operation"
@@ -375,7 +369,7 @@ definitions:
     "securityDefinitions": {
         "api_key": {
             "type": "apiKey",
-            "name": "apiToken",
+            "name": "api_key",
             "in": "header"
         }
     },

@@ -27,13 +27,19 @@
 					link: function ($scope, $elem, $attrs, ngModel) {
 						var baseJsonUri = $scope.baseJsonUri;
 
-
-					/*	// Synchronous highlighting with highlight.js
-						marked.setOptions({
-							highlight: function (code) {
-								return highlight().highlightAuto(code).value;
+						function addApiKeyAuthorization(api_key_id){
+							var key = encodeURIComponent($('#' + api_key_id)[0].value);
+							if(key && key.trim() != "") {
+								if(window.swaggerUi){
+									console.log(key);
+									window.swaggerUi.api.clientAuthorizations.add("api_key", new SwaggerClient.ApiKeyAuthorization("Authorization", key, "header"));
+									console.log(window.swaggerUi.api.clientAuthorizations);
+								} else if(window.swaggerUrlUi){
+									window.swaggerUrlUi.api.clientAuthorizations.add("api_key", new SwaggerClient.ApiKeyAuthorization("Authorization", key, "header"));
+								}
 							}
-						});*/
+						}
+
 
 
 						// Pre load translate...
@@ -47,7 +53,9 @@
 								var code = swaggerElements[i];
 
 								var id = "swagger-url-container-" + i + 1;
-								var div = "<div class='swagger-section'><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+								var api_key_id = "input_apiKey" + i + 1;
+								var div = "<div class='swagger-section'><div class='input'><input placeholder='api_key' id='" + api_key_id + "' name='apiKey' type='text'/></div><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+
 								$(code.parentNode).replaceWith(div);
 
 								//var spec = JSON.parse(code.innerText);
@@ -60,7 +68,14 @@
 								}
 								window.swaggerUrlUi = new SwaggerUi({
 									url: jsonUrl,
-									dom_id: id
+									dom_id: id,
+									onComplete: function(swaggerApi, swaggerUi){
+										addApiKeyAuthorization(api_key_id);
+										$('#' + api_key_id).change(function(){  addApiKeyAuthorization(api_key_id);});
+									},
+									docExpansion: "none",
+									apisSorter: "alpha",
+									showRequestHeaders: true
 								});
 								window.swaggerUrlUi.load();
 							};
@@ -72,13 +87,22 @@
 
 								var spec = JSON.parse(code.innerText);
 								var id = "swagger-json-container" + i + 1;
-								var div = "<div class='swagger-section'><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+								var api_key_id = "input_json_apiKey" + i + 1;
+								var div = "<div class='swagger-section'><div class='input'><label>API Token</label><input class='form-control' placeholder='api_key' id='" + api_key_id + "' name='apiKey' type='text'/></div><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
 								$(code.parentNode).replaceWith(div);
 
 								window.swaggerUi = new SwaggerUi({
 									url: 'localhost',
 									spec: spec,
-									dom_id: id
+									dom_id: id,
+									onComplete: function(swaggerApi, swaggerUi){
+
+										addApiKeyAuthorization(api_key_id);
+										$('#' + api_key_id).change(function(){ addApiKeyAuthorization(api_key_id);});
+									},
+									docExpansion: "none",
+									apisSorter: "alpha",
+									showRequestHeaders: true
 								});
 								window.swaggerUi.load();
 							};
@@ -92,13 +116,22 @@
 								var spec = YAML.parse(yml);
 
 								var id = "swagger-yaml-container-" + i + 1;
-								var div = "<div class='swagger-section'><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+								var api_key_id = "input_yaml_apiKey" + i + 1;
+								var div = "<div class='swagger-section'><div class='input'><input placeholder='api_key' id='" + api_key_id + "' name='apiKey' type='text'/></div><div style='margin-left:0' class='swagger-ui-wrap' id='" + id + "'></div></div>";
+
 								$(code.parentNode).replaceWith(div);
 
 								window.swaggerUi = new SwaggerUi({
 									url: 'localhost',
 									spec: spec,
-									dom_id: id
+									dom_id: id,
+									onComplete: function(swaggerApi, swaggerUi){
+										addApiKeyAuthorization(api_key_id);
+										$('#' + api_key_id).change(function(){addApiKeyAuthorization(api_key_id);});
+									},
+									docExpansion: "none",
+									apisSorter: "alpha",
+									showRequestHeaders: true
 								});
 								window.swaggerUi.load();
 							}
