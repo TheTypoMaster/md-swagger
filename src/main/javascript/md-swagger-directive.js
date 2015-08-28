@@ -24,12 +24,12 @@
 							var key = encodeURIComponent($('#' + api_key_id)[0].value);
 							if(key && key.trim() != "") {
 								if(window.swaggerUi){
-									console.log(key);
 									window.swaggerUi.api.clientAuthorizations.add("api_key", new SwaggerClient.ApiKeyAuthorization("Authorization", key, "header"));
-									console.log(window.swaggerUi.api.clientAuthorizations);
 								} else if(window.swaggerUrlUi){
 									window.swaggerUrlUi.api.clientAuthorizations.add("api_key", new SwaggerClient.ApiKeyAuthorization("Authorization", key, "header"));
 								}
+							} else {
+
 							}
 						}
 
