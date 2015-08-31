@@ -1,5 +1,5 @@
 {
-  "name": "md-swagger-ui",
+  "name": "md-swagger",
   "main": "dist/index.html",
   "authors": [
     "Verizon"
