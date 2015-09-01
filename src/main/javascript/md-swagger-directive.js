@@ -65,7 +65,7 @@
 										addApiKeyAuthorization(api_key_id);
 										$('#' + api_key_id).change(function(){  addApiKeyAuthorization(api_key_id);});
 									},
-									docExpansion: "full",
+									docExpansion: "list",
 									apisSorter: "alpha"
 								});
 								window.swaggerUrlUi.load();
@@ -91,7 +91,7 @@
 										addApiKeyAuthorization(api_key_id);
 										$('#' + api_key_id).change(function(){ addApiKeyAuthorization(api_key_id);});
 									},
-									docExpansion: "full",
+									docExpansion: "list",
 									apisSorter: "alpha"
 								});
 								window.swaggerUi.load();
@@ -120,7 +120,7 @@
 										addApiKeyAuthorization(api_key_id);
 										$('#' + api_key_id).change(function(){addApiKeyAuthorization(api_key_id);});
 									},
-									docExpansion: "full",
+									docExpansion: "list",
 									apisSorter: "alpha"
 								});
 								window.swaggerUi.load();
