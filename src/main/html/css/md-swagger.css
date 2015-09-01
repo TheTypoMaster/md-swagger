@@ -392,6 +392,7 @@
 }
 .swagger-section .container {
   padding: 0px !important;
+  width: auto;
 }
 .swagger-section .info_title,
 .swagger-section .info_description {
