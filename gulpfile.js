@@ -112,7 +112,7 @@ gulp.task('copy', ['less'], function() {
 
 // copy JavaScript files inside lib folder
 	gulp
-			.src(['./bower_components/**/*.{js,map}'])
+			.src(['./bower_components/**/*.{js,css,map}'])
 			.pipe(gulp.dest('./dist/bower_components'))
 			.on('error', log);
 

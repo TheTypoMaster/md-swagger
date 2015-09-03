@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MD Swagger Demo UI</title>
+    <link href='css/md-swagger.css' rel='stylesheet' type='text/css'/>
+    <link href='bower_components/bootstrap/dist/css/bootstrap.css' rel='stylesheet' type='text/css'></link>
+</head>
+<body>
+<style>
+    html, body, .container-fluid, .sections, .sections .form-group {
+        height: 100%;
+    }
+    .ace-editor {
+        height: 100%;
+    }
+    .scroll {
+        overflow:auto;
+    }
+
+</style>
+<div class="container-fluid row" ng-app="swagger-md-demo-app">
+    <ui-view></ui-view>
+</div>
+
+<script src='lib/jquery-1.8.0.min.js' type='text/javascript'></script>
+<script src='lib/jquery.slideto.min.js' type='text/javascript'></script>
+<script src='lib/jquery.wiggle.min.js' type='text/javascript'></script>
+<script src='lib/jquery.ba-bbq.min.js' type='text/javascript'></script>
+<script src='lib/handlebars-2.0.0.js' type='text/javascript'></script>
+<script src='lib/underscore-min.js' type='text/javascript'></script>
+<script src='lib/backbone-min.js' type='text/javascript'></script>
+<script src='lib/highlight.js' type='text/javascript'></script>
+<script src='lib/marked.js' type='text/javascript'></script>
+<script src='lib/yaml.js' type='text/javascript'></script>
+<script src='lib/swagger-oauth.js' type='text/javascript'></script>
+<script src='lib/swagger-ui.js' type='text/javascript'></script>
+
+
+<script src='bower_components/angular/angular.js' type='text/javascript'></script>
+<script src='bower_components/ui-router/release/angular-ui-router.min.js' type='text/javascript'></script>
+<script src='bower_components/ace-builds/src-min/ace.js' type='text/javascript'></script>
+<script src='bower_components/ace-builds/src-min/mode-json.js' type='text/javascript'></script>
+<script src='bower_components/ace-builds/src-min/mode-yaml.js' type='text/javascript'></script>
+<script src='bower_components/angular-ui-ace/ui-ace.min.js' type='text/javascript'></script>
+<script src='md-swagger.js' type='text/javascript'></script>
+
+<script type="text/javascript">
+    angular.module('swagger-md-demo-app', ['ui.ace','md-swagger', 'ui.router'])
+            .config(function($stateProvider, $urlRouterProvider){
+                $urlRouterProvider.otherwise('/home/json');
+                $stateProvider
+                        .state('home', {
+                            url: '/home',
+                            template:'<nav class="navbar navbar-default"><div class="container-fluid"><div class="navbar-header"><a class="navbar-brand" href="#">MD-Swagger Demo</a></div><ul class="nav navbar-nav"><li  ui-sref-active="active"><a ui-sref="home.json">Json <span class="sr-only">(current)</span></a></li><li ui-sref-active="active"><a ui-sref="home.yaml"  >Yaml</a></li><ul></div></nav><ui-view></ui-view>',
+                            abstract:true
+                        })
+                        .state('home.json', {
+                            url: '/json',
+                            template: '<div class="col-md-6 sections"><div class="form-group"><div class="ace-editor" ui-ace="{mode: \'json\'}" ng-model="markdown"></div></div></div><div class="col-md-6 sections scroll"><md-swagger ng-model="markdown" base-json-uri="baseJsonUri"></md-swagger></div>',
+                            controller: 'mdJsonSwaggerCtrl'
+                        })
+                        .state('home.yaml', {
+                            url: '/yaml',
+                            template: '<div class="col-md-6 sections"><div class="form-group"><div class="ace-editor" ui-ace="{mode: \'yaml\'}" ng-model="markdown"></div></div></div><div class="col-md-6 sections scroll"><md-swagger ng-model="markdown" base-json-uri="baseJsonUri"></md-swagger></div>',
+                            controller: 'mdYamlSwaggerCtrl'
+                        })
+            })
+            .controller('mdJsonSwaggerCtrl', function($http, $scope){
+                $scope.baseJsonUri = "";
+                $http.get('docs/sample-json.md').success(function(data){
+                    $scope.markdown = data;
+                });
+            })
+            .controller('mdYamlSwaggerCtrl', function($http, $scope){
+                $scope.baseJsonUri = "";
+                $http.get('docs/sample-yaml.md').success(function(data){
+                    $scope.markdown = data;
+                });
+            })
+</script>
+</body>
+</html>
+

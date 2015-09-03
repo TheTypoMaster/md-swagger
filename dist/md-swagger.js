@@ -12,7 +12,7 @@
 	angular.module('md-swagger', [])
 			.controller('mdSwaggerCtrl', function($http, $scope){
 				$scope.baseJsonUri = "";
-				$http.get('docs/sample.md').success(function(data){
+				$http.get('docs/sample-.md').success(function(data){
 					$scope.markdown = data;
 				});
 			})
@@ -136,10 +136,10 @@
 						ngModel.$render = function () {
 							var md = ngModel.$viewValue;
 							if (md && md.length > 0) {
-
 								var html = marked(ngModel.$viewValue || '');
 								var wrapper = $('<div class="md-swagger"></div>');
 								wrapper.html(html);
+								$elem.empty();
 								$elem.append(wrapper);
 
 								setTimeout(function () {
